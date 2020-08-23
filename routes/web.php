@@ -22,3 +22,7 @@ Route::get('contact', 'appController@contact')->name('contact');
 Route::post('add', 'appController@addUser')->name('add');
 
 Route::any('delete/{user_id?}', 'appController@deleteUser')->name('delete');
+
+Route::any('edit/{userId?}', 'appController@editUser')->name('editUser');
+
+Route::post('editUserAction', 'appController@editUserAction')->name('editUserAction');

@@ -98,4 +98,45 @@ class appController extends Controller
         return true;
     }
 
+    //method to edit user detail
+    function editUser(Request $request){
+        //new web page name
+        $this->webPageName['title']='Edit Student Details';
+        //get user id from http request
+        $userId = $request->userId;
+        //fetch users data according to user id
+        $userData = (new \App\Student)->findOrFail($userId);
+        return view('editStudent', compact('userData'), $this->webPageName);
+    }
+
+    //method to update user edited data
+    function  editUserAction(Request $request){
+        $this-> validate(
+            $request, [
+                'name'=>'required|min:3',
+                'email'=>'email',
+                'image'=>'mimes:jpeg,jpg,png,gig'
+            ], ['name.required'=>'Fill your name first.']
+        );
+        $data['name']=$request->name;
+        $data['email']=$request->email;
+        //get id
+        $id = $request->id;
+        //dd($data);//display data
+        if($request->hasFile('image')){
+            $image= $request->file('image');
+            $ext=$image->getClientOriginalExtension();
+            $imageName=Str::random(18).'.'.$ext;
+            $uploadPath = public_path('lib/images/');
+            //delete old image first & upload new image
+            if($this->_deleteImage($id) && $image->move($uploadPath, $imageName)){
+                $data['image']=$imageName;
+            }
+        }
+        if((new \App\Student)->where('id', $id)->update($data)){
+            //--->echo "users data updated";
+            return redirect()->route('contact')->with('success', 'Users Data Updated Successfully !!!');
+        }
+    }
+
 }

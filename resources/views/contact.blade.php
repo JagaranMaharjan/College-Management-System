@@ -71,7 +71,7 @@
                         <td>{{$studentDetail->created_at->DiffForHumans()}}</td>
                         <td>
                             <button class="btn btn-danger btn-xs"><a href="{{'delete'.'/'.$studentDetail->id}}">Delete</a></button>
-                            <button class="btn btn-warning btn-xs">Edit</button>
+                            <button class="btn btn-warning btn-xs"><a href="{{'edit'.'/'.$studentDetail->id}}">Edit</a></button>
                         </td>
                     </tr>
                 @endforeach
